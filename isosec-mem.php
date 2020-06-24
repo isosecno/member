@@ -48,9 +48,9 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
             $page = "";
             $users = get_users();
             foreach($users as $user) {
-                $dict['navn'] = $user->display_name;
-                $dict['e-post'] = $user->user_email;
-                $page .= $html->replaceSymbols($dict, $page_tmpl);
+                $dict['display_name'] = $user->display_name;
+                $dict['user_email'] = $user->user_email;
+                $page .= $html->replace($page_tmpl, $dict);
             }
             $page_tmpl = $html->getTemplate('memberList.html', 'tabell');
             $dict['tabell'] = $page;
