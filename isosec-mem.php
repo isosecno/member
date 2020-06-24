@@ -57,20 +57,6 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
             $page = $html->replace($page_tmpl, $dict);
             return $page;
         }
-        /*
-        public function __construct() {
-        add_filter('wp_nav_menu_items', [$this, 'filterMenuItems'], 10, 2);
-        }
-
-        public function filterMenuItems($items, $args) {
-        if (strpos($items, '_wpnonce=missing')) {
-        $logoff_url = wp_logout_url();
-        $nonce_pos = strpos($logoff_url, '_wpnonce=');
-        $nonce = substr($logoff_url, $nonce_pos+9, 10);
-        $items = str_replace('_wpnonce=missing', '_wpnonce='.$nonce, $items);
-        }
-        return $items;
-        } */
     }
     $obj = new ISOSEC_Mem();
     $obj->init();
