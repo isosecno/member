@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Template for common parts</title>
+<link rel="stylesheet" type="text/css" href="file://c:/wamp/www/kor/wp-content/plugins/choiradmin/css/chadm-style.css"/>
+<script type='text/javascript' src="file://c:/wamp/www/kor/wp-content/plugins/choiradmin/js/base.js"></script>
+<style>
+#chadm-page {
+    font-family: Arial;
+    font-size: 1em;
+}
+.chadm-hide {
+  /*  display: inline-block !important; */
+}
+</style>
+</head>
+<body id="chadm-page">
+<!-- TEST MESSAGE BOX -->
+<div style="min-height: 1000px; width: 100%;  background-color: lightblue;">
+Område for å lage siden høy slik at det kan skrolles.
+</div>
+<div style="min-height: 100px; width: 100%;  background-color:lightsteelblue ">
+<button style="margin: 30px 10px" id="testMsgBtn">Test msg</button>
+<button style="margin: 30px 10px" id="testWaitBtn">Test ajax spinner</button>
+</div>
+
+<!-- #start modal-msg -->
+<!-- Modal background -->
+<div id="chadm-msg-bg" class="chadm-modal-bg chadm-hide">
+  <!-- Modal content -->
+  <div class="chadm-modal-msg-box">
+    <div class="chadm-modal-msg"></div>
+    <div class="chadm-modal-buttons">
+     <button name='OK'>{ok}</button>
+     <button name='CANCEL'>{cancel}</button>
+     <button name='YES'>{yes}</button>
+     <button name='NO'>{no}</button>
+    </div>
+    <div style="display: none">
+     <!-- Translated messages -->
+     <span data-name="DEL-SONG">{confirm_del_song}</span>
+     <span data-name="DEL-FILES">{confirm_del_files}</span>
+    </div>
+  </div></div>
+<!-- #end modal-msg -->
+
+<!-- #start ajax-wait -->
+<!-- Modal background -->
+<div id="chadm-ajax-wait-bg" class="chadm-modal-bg chadm-hide">
+  <!-- Modal spinner -->
+  <img class="chadm-ajax-wait-img" src="{image_dir}ajax-loader.gif" alt="... wait ..."/>
+</div>
+<!-- #end ajax-wait -->
+<script>
+// test msg
+var btnMsg = document.getElementById('testMsgBtn');
+btnMsg.onclick = function() {
+    chadm_show_msg('This is a test message from the developer', ['OK', 'CANCEL']);
+}
+var btnWait = document.getElementById('testWaitBtn');
+btnWait.onclick = function() {
+    var img =  document.querySelector('.chadm-ajax-wait-img')
+    img.src = "file://C:/wamp/www/kor/wp-content/plugins/choiradmin/images/ajax-loader.gif";
+    setTimeout(function() {chadm_ajax_wait_stop();}, 4000);
+    chadm_ajax_wait_start();
+}
+</script>
+</body>
+</html>

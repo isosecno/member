@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: isosec-mem
+Plugin Name: ISOSEC Medlemsregister
 Description: Diverse funksjoner for medlemsregister
 Version: 1.0
 Author: Pål Bergquist
@@ -25,7 +25,13 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
             $this->ctx->cssUrl = plugins_url('css', __FILE__);
             $this->ctx->jsUrl = plugins_url('js', __FILE__);
 
-            add_shortcode('isosec_mem', array($this ,"isosec_shortcode"));
+            add_shortcode('isosec_mem', [$this ,'isosec_shortcode']);
+            //add_action( 'user_new_form', [$this,'isosec_admin_registration_form']);
+            // Hooks to add extra user meta fields i.e Voice
+            add_action('show_user_profile', ['ISOSEC_Hook_User', 'profileShow'] );
+            add_action('edit_user_profile', ['ISOSEC_Hook_User', 'profileShow'] );
+            add_action( 'personal_options_update', ['ISOSEC_Hook_User', 'profileSave'] );
+            add_action( 'edit_user_profile_update', ['ISOSEC_Hook_User', 'profileSave'] );
             return;
         }
 
@@ -42,14 +48,26 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
             // always return
             //ob_start();
             $ctx = $this->ctx;
+            $selskapene = file_get_contents($ctx->pluginDir . '/selskapene.json');
+            $selskapene = json_decode($selskapene);
+            foreach ( $selskapene as $key => $val ) {
+                $odict[$val->value] = $val->name;
+            }
             $html = $ctx->getHtmlObj();
             //$html_parts = $ctx->getHtmlPartsObj();
             $page_tmpl = $html->getTemplate('memberList.html', 'rad');
             $page = "";
             $users = get_users();
             foreach($users as $user) {
+                if ( in_array("administrator", $user->roles) ) {
+                    continue;
+                }
                 $dict['display_name'] = $user->display_name;
                 $dict['user_email'] = $user->user_email;
+                $dict['phone'] = get_user_meta($user->ID, 'isosec_phone', true);
+                $dict['born'] = get_user_meta($user->ID, 'isosec_born', true);
+                $company = get_user_meta($user->ID, 'isosec_company', true);
+                $dict['company'] =  $company == "" ?  "" : $odict[$company];
                 $page .= $html->replace($page_tmpl, $dict);
             }
             $page_tmpl = $html->getTemplate('memberList.html', 'tabell');
@@ -57,9 +75,9 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
             $page = $html->replace($page_tmpl, $dict);
             return $page;
         }
+
     }
     $obj = new ISOSEC_Mem();
     $obj->init();
 }
 
-?>

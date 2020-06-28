@@ -1,0 +1,22 @@
+{
+  "company1": {
+    "value": "0",
+    "name": "-- Velg selskap --"
+  },
+  "company2": {
+    "value": "1",
+    "name": "Oslo Børs"
+  },
+  "company3": {
+    "value": "2",
+    "name": "VPS"
+  },
+  "company4": {
+    "value": "3",
+    "name": "OMS"
+    },
+  "company5": {
+    "value": "4",
+    "name": "Centevo"
+  }
+}
