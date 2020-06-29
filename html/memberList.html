@@ -17,7 +17,7 @@
         <link rel="stylesheet" type="text/css" href="my.css">
     </head>
     <body>
-<!-- #start tabell -->
+        <!-- #start tabell -->
         <table  class="table table-striped">
             <thead class= "table-dark">
                 <tr>
@@ -29,18 +29,41 @@
                 </tr>
             </thead>
             <tbody>
-            {tabell}
+                <!-- #start rad -->
+                <tr>
+                    <td class="text-left">{display_name}</td>
+                    <td class="text-left">{user_email}</td>
+                    <td class="text-left">{phone}</td>
+                    <td class="text-left">{born}</td>
+                    <td class="text-left">{company}</td>
+                </tr>
+                <!-- #end rad -->
             </tbody>
         </table>
-<!-- #end tabell -->
-<!-- #start rad -->
-        <tr>
-        <td class="text-left">{display_name}</td>
-        <td class="text-left">{user_email}</td>
-        <td class="text-left">{phone}</td>
-        <td class="text-left">{born}</td>
-        <td class="text-left">{company}</td>
-        </tr>
-<!-- #end rad -->
+        <!-- #end tabell -->
+        <!-- #start public -->
+        <table  class="table table-striped">
+            <thead class= "table-dark">
+                <tr>
+                    <th>Navn</th>
+                    <th>E-post</th>
+                    <th>Tlf</th>
+                    <th>Selskap</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- #start rad -->
+                <tr>
+                    <td class="text-left">{display_name}</td>
+                    <td class="text-left">{user_email}</td>
+                    <td class="text-left">{phone}</td>
+                    <td class="text-left">{company}</td>
+                </tr>
+                <!-- #end rad -->
+            </tbody>
+        </table>
+        <!-- #end public -->
+
+
     </body>
 </html>

@@ -57,7 +57,7 @@ class ISOSEC_Html
  */
     public function getTemplatePart(&$templ, $tag, $cut = true, $placeholder = true)
     {
-        $pattern = '/^<!--[ ]*#(start|end) ' . $tag . '[ ]+-->.*(\r\n|\n|\r)/m';
+        $pattern = '/<!--[ ]*#(start|end) ' . $tag . '[ ]+-->.*(\r\n|\n|\r)/m';
         $match;
         preg_match_all($pattern, $templ, $match, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
          if (count($match) != 2 || $match[0][1][0] != 'start' || $match[1][1][0] != 'end') {

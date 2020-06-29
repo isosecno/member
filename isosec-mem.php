@@ -54,8 +54,13 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
                 $odict[$val->value] = $val->name;
             }
             $html = $ctx->getHtmlObj();
-            //$html_parts = $ctx->getHtmlPartsObj();
-            $page_tmpl = $html->getTemplate('memberList.html', 'rad');
+            $edition = 'tabell';
+            if ( isset($atts['page'])) {
+                $edition = 'public';
+            }
+            $page_tmpl = $html->getTemplate('memberList.html', $edition);
+            $rad_tmpl = $html->getTemplatePart($page_tmpl, 'rad', true, true);
+
             $page = "";
             $users = get_users();
             foreach($users as $user) {
@@ -68,10 +73,10 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
                 $dict['born'] = get_user_meta($user->ID, 'isosec_born', true);
                 $company = get_user_meta($user->ID, 'isosec_company', true);
                 $dict['company'] =  $company == "" ?  "" : $odict[$company];
-                $page .= $html->replace($page_tmpl, $dict);
+                $page .= $html->replace($rad_tmpl, $dict);
             }
-            $page_tmpl = $html->getTemplate('memberList.html', 'tabell');
-            $dict['tabell'] = $page;
+
+            $dict['rad'] = $page;
             $page = $html->replace($page_tmpl, $dict);
             return $page;
         }

@@ -9,6 +9,44 @@
 <body>
 <div id="chadm-page">
 <!-- #start extra_user_meta -->
+<script>
+$ = jQuery;
+function sjekkDato(fdato) {
+    // sjekker at dato er gyldig.
+    if (fdato.length != 10 ) {
+        return false;
+    }
+    /*            1  2  3   4    5   6  7  8    9   10  11  12*/
+    var dager = [31,28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var iaar = new Date().getYear() + 1900;
+    var aar = parseInt(fdato.substring(0,4));
+    var mnd = parseInt(fdato.substring(5, 7));
+    var dag = parseInt(fdato.substring(8, 10));
+    if ( aar < iaar - 100 || aar > iaar - 50 ){
+        return false;
+    }
+    if ( aar%4 == 0 && aar%100 != 0) {
+        dager[1] = 29;
+    }
+    if ( dag > dager[mnd-1] ) {
+        return false;
+    }
+
+    return true;
+}
+$(document).ready(function () {
+    $('#your-profile').submit(function(evt) {
+        //evt.preventDefault();
+        var x = $('#chadm_born').val();
+        if ( x == '') return;
+        if (! sjekkDato(x) ) {
+            evt.preventDefault();
+            alert("Oppgitt dato [" + x + "] er ikke gyldig.");
+            return;
+        }
+    });
+});
+</script>
 <div>
   <h3>{head}</h3>
   <p>Under ser du hvilke data vi oppbevarer om deg.<br/>
