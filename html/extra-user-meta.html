@@ -28,6 +28,9 @@ function sjekkDato(fdato) {
     if ( aar%4 == 0 && aar%100 != 0) {
         dager[1] = 29;
     }
+    if ( mnd < 1 || mnd > 12 ) {
+        return false;
+    }
     if ( dag > dager[mnd-1] ) {
         return false;
     }
@@ -51,6 +54,7 @@ $(document).ready(function () {
   <h3>{head}</h3>
   <p>Under ser du hvilke data vi oppbevarer om deg.<br/>
   Hvis feltene ikke inneholder noe, vennligst legg inn opplysningene.<br/>
+  Dersom du ikke vil oppgi telefonnummer og fødselsdato, kan de feltene forbli tomme.<br/>
   Når du er ferdig, klikk på "Oppdatér profil" knappen.
   </p>
   <table class="form-table">
@@ -78,7 +82,7 @@ $(document).ready(function () {
   </tr>
   <tr>
   <th>
-  Til hovedsiden.
+  Til hovedsiden
   </th>
   <td><a href="{tilbake}">Tilbake</a></td>
   </tr>
