@@ -50,6 +50,8 @@ class ISOSEC_Hook_User
         $dict['option'] = $option;
 
         $dict['tilbake'] = get_site_url();
+        $dict['d2'] = "{2}";
+        $dict['d4'] = "{4}";
 
         $res = $html->replaceSymbols($dict, $tmpl);
         echo $res;

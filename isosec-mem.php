@@ -2,7 +2,7 @@
 /*
 Plugin Name: ISOSEC Medlemsregister
 Description: Diverse funksjoner for medlemsregister
-Version: 1.0
+Version: 2.0
 Author: Pål Bergquist
 Author URI: https://isosec.no
 */
@@ -24,6 +24,10 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
             //$this->ctx->uploadDir =  wp_upload_dir()['basedir'] . '/chadm_uploads';
             $this->ctx->cssUrl = plugins_url('css', __FILE__);
             $this->ctx->jsUrl = plugins_url('js', __FILE__);
+
+            //$url = plugins_url('js/sortable.js');
+            wp_enqueue_script('chadm-Sortable', $this->ctx->jsUrl . '/sortable.js');
+
 
             add_shortcode('isosec_mem', [$this ,'isosec_shortcode']);
             //add_action( 'user_new_form', [$this,'isosec_admin_registration_form']);
@@ -63,14 +67,29 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
 
             $page = "";
             $users = get_users();
+            $dette_aar = date('Y');
+            $rundt_aar = [70, 75, 80, 85, 90];
             foreach($users as $user) {
                 if ( in_array("administrator", $user->roles) ) {
                     continue;
                 }
+
                 $dict['display_name'] = $user->display_name;
                 $dict['user_email'] = $user->user_email;
                 $dict['phone'] = get_user_meta($user->ID, 'isosec_phone', true);
                 $dict['born'] = get_user_meta($user->ID, 'isosec_born', true);
+                $dict['jubilee'] = "";
+                if ($dict['born'] != "") {
+                    $fodt_aar = substr($dict['born'], 0, 4);
+                    for ($i = 0; $i < 4; $i++) {
+                        if ( $fodt_aar + $rundt_aar[$i] == $dette_aar ) {
+                            $dict['jubilee'] = $dette_aar . '-' .
+                                substr($dict['born'], 6) . " (" .  $rundt_aar[$i] . ")";
+                        }
+                    }
+
+                }
+
                 $company = get_user_meta($user->ID, 'isosec_company', true);
                 $dict['company'] =  $company == "" ?  "" : $odict[$company];
                 $page .= $html->replace($rad_tmpl, $dict);
