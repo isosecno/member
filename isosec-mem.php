@@ -84,7 +84,7 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
                     for ($i = 0; $i < 4; $i++) {
                         if ( $fodt_aar + $rundt_aar[$i] == $dette_aar ) {
                             $dict['jubilee'] = $dette_aar . '-' .
-                                substr($dict['born'], 6) . " (" .  $rundt_aar[$i] . ")";
+                                substr($dict['born'], 5) . " (" .  $rundt_aar[$i] . ")";
                         }
                     }
 
