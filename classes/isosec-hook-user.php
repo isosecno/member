@@ -1,7 +1,6 @@
 <?php
 class ISOSEC_Hook_User
 {
-    public static function loggedOn($user_obj)
 
     public static function profileShow($user)
     {
