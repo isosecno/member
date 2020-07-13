@@ -2,14 +2,6 @@
 class ISOSEC_Hook_User
 {
     public static function loggedOn($user_obj)
-    {
-        $ctx = ISOSEC_Context::getInstance();
-        $log = $ctx->getLogObj();
-        if ($user_obj instanceof WP_User) {
-            $log->logEvent(['log_obj' => 'user', 'log_event' => 'login'], $user_obj);
-        }
-        return $user_obj;
-    }
 
     public static function profileShow($user)
     {
@@ -29,6 +21,13 @@ class ISOSEC_Hook_User
         // Born
         $dict['label_born'] = 'Fødselsdato';
         $dict['born'] = get_user_meta($user->ID, 'isosec_born', true);
+
+        // Ansatt nummr
+        $dict['label_ansattnr'] = 'Ansatt nummer';
+        $dict['ansattnr'] = get_user_meta($user->ID, 'isosec_ansattnr', true);
+        if ( in_array("subscriber", $user->roles) ) {
+            $dict['disabled'] = 'disabled';
+        }
 
         // Selskap
         $dict['label_company'] = 'Selskap';
@@ -59,6 +58,7 @@ class ISOSEC_Hook_User
 
     public static function profileSave($user_id)
     {
+        $user = wp_get_current_user();
 
         if (isset($_POST['isosec_phone'])) {
             update_user_meta($user_id, 'isosec_phone', $_POST['isosec_phone']);
@@ -66,10 +66,14 @@ class ISOSEC_Hook_User
         if (isset($_POST['isosec_born'])) {
             update_user_meta($user_id, 'isosec_born', $_POST['isosec_born']);
         }
-        if (isset($_POST['isosec_company']) && ['isosec_company'] != '--Velg selskap--' ) {
+        if ( ! in_array("subscriber", $user->roles) ) {
+            if (isset($_POST['isosec_ansattnr']) ) {
+                update_user_meta($user_id, 'isosec_ansattnr', $_POST['isosec_ansattnr']);
+            }
+        }
+
+        if (isset($_POST['isosec_company']) && $_POST['isosec_company'] != "0") {
             update_user_meta($user_id, 'isosec_company', $_POST['isosec_company']);
-        } else  {
-            update_user_meta($user_id, 'isosec_company', '');
         }
 
     }
