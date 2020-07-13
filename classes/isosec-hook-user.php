@@ -24,7 +24,8 @@ class ISOSEC_Hook_User
         // Ansatt nummr
         $dict['label_ansattnr'] = 'Ansatt nummer';
         $dict['ansattnr'] = get_user_meta($user->ID, 'isosec_ansattnr', true);
-        if ( in_array("subscriber", $user->roles) ) {
+        $current_user = wp_get_current_user();
+        if ( in_array("subscriber", $current_user->roles) ) {
             $dict['disabled'] = 'disabled';
         }
 
