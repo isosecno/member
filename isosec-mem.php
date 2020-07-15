@@ -78,6 +78,7 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
                 $dict['user_email'] = $user->user_email;
                 $dict['phone'] = get_user_meta($user->ID, 'isosec_phone', true);
                 $dict['born'] = get_user_meta($user->ID, 'isosec_born', true);
+                $dict['ansattnr'] = get_user_meta($user->ID, 'isosec_ansattnr', true);
                 $dict['jubilee'] = "";
                 if ($dict['born'] != "") {
                     $fodt_aar = substr($dict['born'], 0, 4);
