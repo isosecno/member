@@ -13,6 +13,7 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
     {
         public $plugin_dir;
         private $ctx;
+        private $odict;
 
         public function init() {
             spl_autoload_register([$this, 'autoload_classes']);
@@ -55,12 +56,17 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
             $selskapene = file_get_contents($ctx->pluginDir . '/selskapene.json');
             $selskapene = json_decode($selskapene);
             foreach ( $selskapene as $key => $val ) {
-                $odict[$val->value] = $val->name;
+                $this->odict[$val->value] = $val->name;
             }
             $html = $ctx->getHtmlObj();
             $edition = 'tabell';
             if ( isset($atts['page'])) {
+                if ( $atts['page'] == "public") {
                 $edition = 'public';
+                } else {
+                    return $this->showProfile();
+                }
+
             }
             $page_tmpl = $html->getTemplate('memberList.html', $edition);
             $rad_tmpl = $html->getTemplatePart($page_tmpl, 'rad', true, true);
@@ -85,18 +91,38 @@ if ( !class_exists( 'ISOSEC_Mem' ) ) {
                     for ($i = 0; $i < 4; $i++) {
                         if ( $fodt_aar + $rundt_aar[$i] == $dette_aar ) {
                             $dict['jubilee'] = $dette_aar . '-' .
-                                substr($dict['born'], 5) . " (" .  $rundt_aar[$i] . ")";
+                            substr($dict['born'], 5) . " (" .  $rundt_aar[$i] . ")";
                         }
                     }
 
                 }
 
                 $company = get_user_meta($user->ID, 'isosec_company', true);
-                $dict['company'] =  $company == "" ?  "" : $odict[$company];
+                $dict['company'] =  $company == "" ?  "" : $this->odict[$company];
                 $page .= $html->replace($rad_tmpl, $dict);
             }
 
             $dict['rad'] = $page;
+            $page = $html->replace($page_tmpl, $dict);
+            return $page;
+        }
+
+        private function showProfile() {
+            //return "DEtte er min rprfil";
+            $ctx = $this->ctx;
+            $html = $ctx->getHtmlObj();
+            $page_tmpl = $html->getTemplate('myProfile.html', "profil");
+            $user = wp_get_current_user();
+            $dict['display_name'] = $user->display_name;
+            $dict['user_email'] = $user->user_email;
+            $dict['phone'] = get_user_meta($user->ID, 'isosec_phone', true);
+            $dict['born'] = get_user_meta($user->ID, 'isosec_born', true);
+            $dict['ansattnr'] = get_user_meta($user->ID, 'isosec_ansattnr', true);
+            $dict['jubilee'] = "";
+            $company = get_user_meta($user->ID, 'isosec_company', true);
+            $dict['company'] =  $company == "" ?  "" : $this->odict[$company];
+            $dict['oppdater'] =  get_home_url() . "/wp-admin/profile.php";
+
             $page = $html->replace($page_tmpl, $dict);
             return $page;
         }
